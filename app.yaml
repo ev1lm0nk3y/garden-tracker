@@ -1,0 +1,33 @@
+application: garden-tracker
+version: 2
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /img
+  static_dir: img
+
+- url: /js
+  static_dir: js
+
+- url: /admin/.*
+  script: garden.app
+  login: admin
+  secure: always
+  auth_fail_action: unauthorized
+
+- url: /ncdc.*
+  script: ncdc.app
+
+- url: /.*
+  script: garden.app
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest

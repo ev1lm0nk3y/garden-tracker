@@ -1,0 +1,20 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+  <body>
+    <h1>Welcome</h1>
+    {% if user %}
+      How can I help you {{ user }}
+      <ul style="list-style: none">
+        <li><a href="/mygarden/">View Garden</a></li>
+	{% if admin %}
+	  <li><a href="/admin/">Admin Console</a></li>
+	{% endif %}
+      </ul>
+    {% else %}
+      You Are Unknown<br>
+    {% endif %}
+    <a href="{{ url }}">{{ linktext }}</a>
+  </body>
+</html>
+{% endautoescape %}

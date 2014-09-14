@@ -1,0 +1,50 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+<body>
+<h1>All Plants</h1>
+  <table>
+    <tr>
+      <th>Plant Name</th>
+      <th>Indoor Dates</th>
+      <th>Outdoor Dates</th>
+      <th>Minimum Soil Temp (<sup>o</sup>F)</th>
+      <th>Cold Hardiness</th>
+      <th>Fertilization</th>
+      <th>Water</th>
+      <th>Action(s)</th>
+    </tr>
+    <form action="/admin/edit_plants">
+    {% for plant in all_plants %}
+      <tr>
+        <td><input type=checkbox name="plant_id" value="{{ plant.plant_id }}">{{ plant.plant_id }}
+        {% if plant.picture %}
+          <img src="{{ plant.picture }}" width=45 height=45>
+        {% endif %}
+        </td>
+        {% if plant.start_indoors %}
+          <td>{{ plant.start_indoors }}</td>
+        {% else %}
+          <td>&nbsp;</td>
+        {% endif %}
+        {% if plant.start_outdoors %}
+          <td>{{ plant.start_outdoors }}</td>
+        {% else %}
+          <td>&nbsp;</td>
+        {% endif %}
+        <td>{{ plant.min_soil_temp }}</td>
+        <td>{{ plant.hardness }}</td>
+        <td>{{ plant.fertilize }}</td>
+        <td>{{ plant.water }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <font size=12><b>Add More Plants</b></font><br>
+  </form>
+  <form action="/admin/upload_plants" method="post" enctype="multipart/form-data">
+    Name of JSON formatted file with plant information
+    <input type="file" name="plant_json">
+    <input type="submit" name="input" value="Upload">
+  </form>
+</body></html>
+{% endautoescape %}

@@ -1,0 +1,168 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <title>Graden Tracker - Your Gardens</title>
+    <link rel="stylesheet" type="text/css" href="/css/garden.css"></link>
+    <script type="text/javascript" src="/js/garden.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <img src="/img/garden_header.jpg" width=100% height=100%>
+      <div class="header_nav_bar">
+        <div class="header_nav_tab_current_page">My Gardens</div>
+        <div class="header_nav_tab" onclick="showCreateGarden();">
+          Create New Garden</div>
+      </div>
+    </div>
+    <div class="main_panel">
+    {{ message }}
+    {% if admin %}
+    Go to the <a href="/admin">Admin Page</a>
+    {% endif %}
+    {% for garden in gardens %}
+    <div id="{{ garden.title }}">
+      <table class="garden_table">
+        <tr class="garden_heading">
+          <th colspan=6>{{ garden.title }}</th>
+          <th class="garden_created_on">Created on {{ garden.created }}</th>
+          <th align=right>
+            <input type="button" name="delete_garden" value="Delete Garden"
+            onClick="deleteGarden('{{ garden.title }}');">
+          </th>
+        </tr>
+        <tr class="garden_heading">
+          <td>&nbsp;</td>
+          <th>Plant Name</th>
+          <th>Plant Indoor</th>
+          <th>Plant Outdoor</th>
+          <td>&nbsp;</td>
+        </tr>
+        {% for plant in garden.plants %}
+          <tr class="garden_row">
+            <td>
+              <input type=checkbox name='{{ garden_title }}_items'
+                onchange="plantSelection(this, '{{garden_title}}',
+                                         '{{plant.plant.plant_type}}',
+                                         '{{plant.plant.plant_id}}');"></td>
+            <td>{{ plant.plant.plant_id }}</td>
+            {% if plant.plant.start_indoors %}
+            <td><script>prettyDate("{{ plant.indoor_dates }}");</script></td>
+            {% else %}
+              <td>&nbsp;</td>
+            {% endif %}
+            {% if plant.plant.start_outdoors %}
+            <td><script>prettyDate("{{ plant.outdoor_dates }}");</script></td>
+            {% else %}
+              <td>&nbsp;</td>
+            {% endif %}
+            <td><span
+                style="color: blue; font-size: 8pt;"
+                onClick="showPlantInfo('{{plant.plant.plant_type}}',
+                                       '{{plant.plant.plant_id}}');">
+                  More Info</span></td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td align=left colspan=8>
+            <input type=button name="Add" value="Add Plants"
+              id="{{ garden.title }}_add"
+              onClick="addPlants('{{garden_title}}')">
+            <input type=button name="Delete" value="Delete Plants"
+              id="{{ garden.title }}_delete"
+              onClick="deletePlants('{{garden_title}}')">
+          </td>
+        </tr>
+        </form>
+      </table>
+    </div>
+    {% endfor %}
+    <!-- The div to create the garden popup -->
+    <div class="create_garden" id="create_garden_form">
+    {% if zipcode == '' %}
+      <span style="color: red; size: 16pt;">You must enter at least your zipcode
+      to continue</span><br>
+    {% endif %}
+    <table>
+      <tr>
+        <th>Garden Title</th>
+        <td><input type=text width=50 name="garden_title" id="garden_title"><br>
+          <span style="font-size: 8pt; color: #ff00ff; font-style: italics;">
+            This must be a unique name for your garden</span></td>
+      </tr>
+      <tr>
+        <th>Garden Year</th>
+        <td>
+          <select name="garden_year" id="garden_year">
+            <option value="Invalid" disabled selected>-- Select Year --</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th valign="top">Select Plants</th>
+        <td>
+          <select name="plants" id="garden_plants" multiple size=10>
+            {% set plant_type = '' %}
+            {% for plant in all_plants %}
+              {% if plant_type != plant.plant_type %}
+                <option disabled>-- {{ plant.plant_type }} --</option>
+                {% set plant_type = plant.plant_type %}
+              {% endif %}
+              <option value="{{ plant.plant_type }} {{ plant.plant_id }}">
+                  {{ plant.plant_id }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type=button name="create" value="Make Garden"
+           onClick="createGarden()"
+           {% if zipcode == '' %}
+             disabled
+           {% endif %}>
+        </td>
+        <td>
+           <input type=button name="cancel" value="Cancel"
+            onClick="hideCreateGarden();">
+        </td>
+      </tr>
+    </table>
+    <!-- The following div is to generate messages within the create garden form -->
+    <div id="create_garden_messages"></div>
+    </div> <!-- END create_garden_form -->
+    </div>
+    <div class="right_panel">
+      <div class="title_bar">
+        <div class="title_bar_photo">
+          <img src="{{ photo }}" height="100%">
+        </div>
+        <div class="title_bar_user">
+          <span>{{ user }}</span>
+          <span style="font-size: 8pt;">{{ email }}</span>
+        </div>
+      </div>
+      <div class="edit_profile">
+        <span class="profile_address">Address:</span>
+        <input type=text name=address value="{{ address }}" id="profile_address"
+        class="profile_input">
+        <span class="profile_address">
+          City: <span id="profile_city">{{ city }}</span><br>
+          State: <span id="profile_state">{{ state }}</span>
+        </span>
+        <span class="profile_address">Zip Code<font color="red">*</font>:</span>
+        <input type=text name=zipcode value="{{ zipcode }}" id="profile_zipcode"
+          class="profile_input">
+        <input type="button" name="update_profile" value="Update Profile"
+          id="update_profile_button" class="profile_button"
+          onClick="updateProfile();">
+        <div class="float: left; width: 100%; size: 10pt;"
+          id="update_profile_message"></div>
+      </div>
+    </div>
+  </body>
+</html>
+{% endautoescape %}

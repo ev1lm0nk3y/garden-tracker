@@ -1,0 +1,69 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <title>Graden Tracker - Create Garden</title>
+    <link rel="stylesheet" type="text/css" href="/css/garden.css">
+  </head>
+  <body>
+    <div class="user_header">
+      <div class="user_header_elements">{{ profile.name }}</div>
+      <div class="user_header_elements">
+        <img src="{{ profile.picture }}" class="user_header">
+      </div>
+      <div class="user_header_elements"><a href="/logout">Log Out</a></div>
+    </div>
+    <div class="header">
+      <span class=header_title>Garden Tracker</span>
+      <div class="header_nav_bar">
+        <div class="header_nav_tab">My Gardens</div>
+        <div class="header_nav_tab_selected">Create New Garden</div>
+      </div>
+    </div>
+    <div class="main_panel">
+
+    <h2>Create a New Garden</h2>
+    <form action="/mygarden/create_garden" method="POST" id="create_garden">
+      <div class="create_garden_left">
+      <table>
+        <tr>
+          <th>Garden Title</th>
+          <td><input type=text width=50 name="garden_title"><br>
+            <span style="font-size: 8pt; color: #666666; font-style: italics;">
+              This must be a unique name for your garden</span></td>
+        </tr>
+        <tr>
+          <th>Garden Year</th>
+          <td>
+            <select name="garden_year" form="create_garden">
+              <option value="Invalid" disabled selected>-- Select Year --</option>
+              <option value="2014">2014</option>
+              <option value="2015">2015</option>
+              <option value="2016">2016</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th valign="top">Select Plants</th>
+          <td>
+            <select name="plants" form="create_garden" multiple size=10>
+              {% set plant_type = '' %}
+              {% for plant in all_plants %}
+                {% if plant_type != plant.plant_type %}
+                  <option disabled>-- {{ plant.plant_type }} --</option>
+                  {% set plant_type = plant.plant_type %}
+                {% endif %}
+                <option value="{{ plant.plant_type }}_{{ plant.plant_id }}">
+                    {{ plant.plant_id }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+      </table>
+      <input type="submit" name="create" value="Make Garden">
+    </form>
+  </body>
+</html>
+{% endautoescape %}
+
+

@@ -1,0 +1,24 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <title>Garden Tracker - Log In</title>
+    <script type="text/javascript" src="/js/git.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.accountchooser.com/client.js"></script>
+    <script type="text/javascript">
+      google.load('identitytoolkit', '2', {packages: ['store']});
+      jQuery(function()) {
+        var homeUrl = '/'; // Your home page URL.
+        var account = {
+          email: 'user@idp.com',  // required
+          displayName: 'User Name',  // optional
+          photoUrl: 'http://website.com/img/user.png'  // optional
+        };
+        // Store the account then return to homeUrl.
+        window.google.identitytoolkit.storeAccount(account, homeUrl);
+      });
+    </script>
+  </head>
+  

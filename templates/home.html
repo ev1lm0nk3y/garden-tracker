@@ -1,0 +1,31 @@
+<! DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <title>Garden Tracker - Home</title>
+    <script type="text/javascript" src="/js/git.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/garden.css"></link>
+  </head>
+  <body>
+  <div class="header">
+    <span class="header_title">Garden Tracker</span>
+    <div class="header_nav_bar">
+      <div class="header_nav_tab">Home</div>
+      <div class="header_nav_tab">About Us</div>
+      <div class="header_nav_tab">Sign In/Up</div>
+    </div>
+  </div>
+  <div class="left_panel">
+    <span class="left_title">What People Are Saying</span>
+    <!-- put something here -->
+  </div>
+  <div class="main_panel">
+    <span class="main_panel_title">
+      New to Garden Tracker? Sign in with your <a onClick="load()">Google
+      Account</a><br>
+      Otherwise <a href="/login">Log In</a> to view your profile and
+      gardens</span>
+  </div>
+  </body>
+<html>
+{% endautoescape %}
